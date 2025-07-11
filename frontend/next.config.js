@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
   reactStrictMode: true,
   images: {
     domains: ['m.media-amazon.com', 'ia.media-imdb.com', 'placehold.co'],
