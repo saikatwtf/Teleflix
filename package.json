@@ -1,9 +1,0 @@
-{
-  "name": "teleflix",
-  "version": "1.0.0",
-  "scripts": {
-    "build": "cd frontend && npm install && npm run build",
-    "dev": "cd frontend && npm run dev",
-    "start": "cd frontend && npm run start"
-  }
-}
