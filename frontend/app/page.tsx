@@ -25,25 +25,34 @@ export const metadata: Metadata = {
   description: 'Watch and download your favorite movies, TV series, and anime from Telegram channels.',
 };
 
-// Fetch recent media
+// Fetch recent media with fallback
 async function getRecentMedia(): Promise<MediaResponse> {
-  const res = await fetch(`${process.env.API_URL}/api/recent?limit=12`, { next: { revalidate: 3600 } });
-  
-  if (!res.ok) {
-    throw new Error('Failed to fetch recent media');
+  try {
+    // Use optional chaining to handle undefined API_URL
+    const apiUrl = process.env.API_URL;
+    if (!apiUrl) {
+      return { results: [], total: 0 };
+    }
+    
+    const res = await fetch(`${apiUrl}/api/recent?limit=12`, { 
+      next: { revalidate: 3600 },
+      cache: 'no-cache'
+    });
+    
+    if (!res.ok) {
+      return { results: [], total: 0 };
+    }
+    
+    return res.json();
+  } catch (error) {
+    // Return empty results on any error
+    return { results: [], total: 0 };
   }
-  
-  return res.json();
 }
 
 export default async function Home() {
-  let recentMedia: MediaResponse = { results: [], total: 0 };
-  
-  try {
-    recentMedia = await getRecentMedia();
-  } catch (error) {
-    // Error handled by showing empty state
-  }
+  // Get recent media with built-in error handling
+  const recentMedia = await getRecentMedia();
   
   return (
     <div>
