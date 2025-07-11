@@ -27,7 +27,7 @@ A Telegram-powered Movie/Series/Anime Website that connects to a private Telegra
 
 1. Clone the repository
    ```
-   git clone https://github.com/yourusername/Teleflix.git
+   git clone https://github.com/saikatwtf/Teleflix.git
    cd Teleflix
    ```
 
