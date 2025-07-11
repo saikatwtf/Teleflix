@@ -3,6 +3,40 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FiArrowLeft, FiPlay } from 'react-icons/fi';
 
+// Define interfaces for season data
+interface FileInfo {
+  file_id: string;
+  file_size: number;
+  quality: string;
+  source?: string;
+  format?: string;
+}
+
+interface Episode {
+  episode_number: number;
+  title?: string;
+  files: FileInfo[];
+}
+
+interface Season {
+  season_number: number;
+  title?: string;
+  episodes: Record<string, Episode>;
+}
+
+interface MediaBasic {
+  id: string;
+  title: string;
+  slug: string;
+  media_type: string;
+  poster?: string;
+}
+
+interface SeasonData {
+  media: MediaBasic;
+  season: Season;
+}
+
 // Generate metadata
 export async function generateMetadata({ 
   params 
@@ -32,7 +66,7 @@ export async function generateMetadata({
 }
 
 // Fetch season data
-async function getSeasonData(slug: string, season: number) {
+async function getSeasonData(slug: string, season: number): Promise<SeasonData> {
   const res = await fetch(
     `${process.env.API_URL}/api/media/${slug}/season/${season}`,
     { next: { revalidate: 3600 } }
@@ -53,7 +87,7 @@ export default async function SeasonPage({
   const { slug, season } = params;
   const seasonNumber = parseInt(season);
   
-  let seasonData;
+  let seasonData: SeasonData;
   try {
     seasonData = await getSeasonData(slug, seasonNumber);
   } catch (error) {
@@ -96,7 +130,7 @@ export default async function SeasonPage({
         
         {Object.keys(episodes).length > 0 ? (
           <div className="space-y-4">
-            {Object.entries(episodes).map(([episodeNum, episode]: [string, any]) => (
+            {Object.entries(episodes).map(([episodeNum, episode]: [string, Episode]) => (
               <Link
                 key={episodeNum}
                 href={`/${slug}/season-${seasonNumber}/episode-${episodeNum}`}
@@ -120,7 +154,7 @@ export default async function SeasonPage({
                         {/* File quality badges */}
                         {episode.files && episode.files.length > 0 && (
                           <div className="flex flex-wrap gap-2 mt-2">
-                            {episode.files.map((file: any, index: number) => (
+                            {episode.files.map((file: FileInfo, index: number) => (
                               <span
                                 key={index}
                                 className="px-2 py-0.5 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded text-xs"

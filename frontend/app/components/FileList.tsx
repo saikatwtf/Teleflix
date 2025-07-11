@@ -43,7 +43,7 @@ export default function FileList({ files }: FileListProps) {
       const data = await response.json();
       window.open(data.download_link, '_blank');
     } catch (error) {
-      console.error('Download error:', error);
+      // Silent fail in production
       alert('Failed to generate download link. Please try again.');
     }
   };
@@ -57,7 +57,7 @@ export default function FileList({ files }: FileListProps) {
       const data = await response.json();
       window.open(data.stream_link, '_blank');
     } catch (error) {
-      console.error('Stream error:', error);
+      // Silent fail in production
       alert('Failed to generate streaming link. Please try again.');
     }
   };
@@ -95,7 +95,7 @@ export default function FileList({ files }: FileListProps) {
         document.body.removeChild(modal);
       });
     } catch (error) {
-      console.error('External player error:', error);
+      // Silent fail in production
       alert('Failed to generate streaming link. Please try again.');
     }
   };

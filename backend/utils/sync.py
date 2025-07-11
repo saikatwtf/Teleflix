@@ -1,10 +1,14 @@
 import asyncio
 import os
+import logging
 from typing import Dict, Any, List
 from pyrogram import Client
 from pyrogram.types import Message
 from bson.objectid import ObjectId
 from datetime import datetime
+
+# Configure logging
+logger = logging.getLogger(__name__)
 
 from config import TELEGRAM_API_ID, TELEGRAM_API_HASH, BOT_TOKENS, CHANNEL_ID
 from database import media_collection, files_collection
@@ -41,7 +45,7 @@ class TelegramSync:
                 await bot.start()
                 self.bots.append(bot)
         
-        print(f"Initialized {len(self.bots)} download bots")
+        logger.info(f"Initialized {len(self.bots)} download bots")
     
     async def stop(self):
         """Stop Telegram client and bots"""
@@ -75,7 +79,7 @@ class TelegramSync:
         # Check if file already exists
         existing_file = await files_collection.find_one({"file_id": file_id})
         if existing_file:
-            print(f"File already exists: {filename}")
+            logger.debug(f"File already exists: {filename}")
             return
         
         # Parse filename
@@ -89,7 +93,7 @@ class TelegramSync:
         )
         
         if not imdb_data:
-            print(f"No IMDb data found for: {filename}")
+            logger.warning(f"No IMDb data found for: {filename}")
             # Create basic metadata without IMDb
             media_id = str(ObjectId())
             media_data = {
@@ -178,7 +182,7 @@ class TelegramSync:
         # Store file info
         await files_collection.insert_one(file_info)
         
-        print(f"Processed: {filename}")
+        logger.info(f"Processed: {filename}")
     
     async def sync_channel(self, limit: int = 100):
         """Sync messages from the channel"""
@@ -186,7 +190,7 @@ class TelegramSync:
             async for message in self.app.get_chat_history(CHANNEL_ID, limit=limit):
                 await self.process_message(message)
         except Exception as e:
-            print(f"Error syncing channel: {e}")
+            logger.error(f"Error syncing channel: {e}")
     
     async def listen(self):
         """Listen for new messages in the channel"""

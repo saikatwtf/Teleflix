@@ -17,6 +17,12 @@ const nextConfig = {
       },
     ]
   },
+  // Production optimizations
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  poweredByHeader: false,
 }
 
 module.exports = nextConfig

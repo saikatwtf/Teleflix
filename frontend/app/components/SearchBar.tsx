@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { FiSearch, FiX } from 'react-icons/fi';
@@ -55,7 +57,7 @@ export default function SearchBar() {
       setResults(response.data.results);
       setShowResults(true);
     } catch (error) {
-      console.error('Search error:', error);
+      // Silent fail in production
     } finally {
       setIsLoading(false);
     }

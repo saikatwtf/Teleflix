@@ -42,7 +42,7 @@ export default async function Home() {
   try {
     recentMedia = await getRecentMedia();
   } catch (error) {
-    console.error('Error fetching recent media:', error);
+    // Error handled by showing empty state
   }
   
   return (
@@ -76,7 +76,7 @@ export default async function Home() {
         
         {recentMedia.results.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            {recentMedia.results.map((media) => (
+            {recentMedia.results.map((media: MediaItem) => (
               <MediaCard
                 key={media.id}
                 id={media.id}

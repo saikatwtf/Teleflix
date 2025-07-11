@@ -1,7 +1,11 @@
 import asyncio
+import logging
 from typing import Dict, Any, Optional, List
 from imdb import Cinemagoer
 from slugify import slugify
+
+# Configure logging
+logger = logging.getLogger(__name__)
 
 # Initialize Cinemagoer
 ia = Cinemagoer()
@@ -59,5 +63,5 @@ async def search_imdb(title: str, year: Optional[int] = None, media_type: str = 
         
         return result
     except Exception as e:
-        print(f"Error fetching IMDb data: {e}")
+        logger.error(f"Error fetching IMDb data: {e}")
         return None

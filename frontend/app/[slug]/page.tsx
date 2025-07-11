@@ -4,6 +4,42 @@ import Link from 'next/link';
 import { FiStar, FiCalendar, FiFilm, FiList } from 'react-icons/fi';
 import FileList from '../components/FileList';
 
+// Define interfaces for media data
+interface Season {
+  season_number: number;
+  title?: string;
+  episodes: Record<string, Episode>;
+}
+
+interface Episode {
+  episode_number: number;
+  title?: string;
+  files: FileInfo[];
+}
+
+interface FileInfo {
+  file_id: string;
+  file_size: number;
+  quality: string;
+  source?: string;
+  format?: string;
+}
+
+interface MediaDetail {
+  id: string;
+  title: string;
+  slug: string;
+  media_type: string;
+  poster?: string;
+  backdrop?: string;
+  plot?: string;
+  rating?: number;
+  genres?: string[];
+  release_year?: number;
+  files?: FileInfo[];
+  seasons?: Record<string, Season>;
+}
+
 // Generate metadata
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const slug = params.slug;
@@ -28,7 +64,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 // Fetch media by slug
-async function getMediaBySlug(slug: string) {
+async function getMediaBySlug(slug: string): Promise<MediaDetail> {
   const res = await fetch(`${process.env.API_URL}/api/media/${slug}`, { next: { revalidate: 3600 } });
   
   if (!res.ok) {
@@ -41,7 +77,7 @@ async function getMediaBySlug(slug: string) {
 export default async function MediaPage({ params }: { params: { slug: string } }) {
   const slug = params.slug;
   
-  let media;
+  let media: MediaDetail;
   try {
     media = await getMediaBySlug(slug);
   } catch (error) {
@@ -162,7 +198,7 @@ export default async function MediaPage({ params }: { params: { slug: string } }
             
             {Object.keys(media.seasons || {}).length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {Object.entries(media.seasons).map(([seasonNum, season]: [string, any]) => (
+                {Object.entries(media.seasons).map(([seasonNum, season]: [string, Season]) => (
                   <Link
                     key={seasonNum}
                     href={`/${slug}/season-${seasonNum}`}
