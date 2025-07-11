@@ -1,4 +1,25 @@
-backend
--p
-frontend
-app
+# Ignore directories
+/app
+/backend
+/-p
+/frontend
+/pages
+/.vercel
+/node_modules
+/.next
+/out
+
+# Ignore files
+package.json
+package-lock.json
+next.config.js
+postcss.config.js
+tailwind.config.js
+tsconfig.json
+README.md
+LICENSE
+.gitignore
+.npmrc
+build.sh
+.vercel-build.sh
+.vercel-install.sh
