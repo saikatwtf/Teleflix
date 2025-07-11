@@ -3,6 +3,28 @@ import Link from 'next/link';
 import { FiFilter } from 'react-icons/fi';
 import MediaCard from '../components/MediaCard';
 
+// Define interface for media items
+interface MediaItem {
+  id: string;
+  title: string;
+  slug: string;
+  media_type: string;
+  poster?: string;
+  rating?: number;
+  release_year?: number;
+}
+
+// Define interface for search results
+interface SearchResponse {
+  results: MediaItem[];
+  total: number;
+}
+
+// Define interface for genres response
+interface GenresResponse {
+  genres: string[];
+}
+
 // Metadata
 export const metadata: Metadata = {
   title: 'Search Results - Teleflix',
@@ -10,7 +32,7 @@ export const metadata: Metadata = {
 };
 
 // Fetch search results
-async function searchMedia(query: string, mediaType?: string, genre?: string, sort?: string) {
+async function searchMedia(query: string, mediaType?: string, genre?: string, sort?: string): Promise<SearchResponse> {
   const params = new URLSearchParams();
   params.append('q', query);
   
@@ -28,7 +50,7 @@ async function searchMedia(query: string, mediaType?: string, genre?: string, so
 }
 
 // Fetch genres
-async function getGenres() {
+async function getGenres(): Promise<GenresResponse> {
   const res = await fetch(`${process.env.API_URL}/api/genres`, { next: { revalidate: 3600 } });
   
   if (!res.ok) {
@@ -48,8 +70,8 @@ export default async function SearchPage({
   const genre = searchParams.genre;
   const sort = searchParams.sort || 'recent';
   
-  let searchResults = { results: [], total: 0 };
-  let genresList = { genres: [] };
+  let searchResults: SearchResponse = { results: [], total: 0 };
+  let genresList: GenresResponse = { genres: [] };
   
   try {
     // Fetch search results and genres in parallel
