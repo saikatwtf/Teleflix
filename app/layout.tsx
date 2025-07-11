@@ -1,3 +1,8 @@
+import './styles/globals.css';
+import { Inter } from 'next/font/google';
+
+const inter = Inter({ subsets: ['latin'] });
+
 export default function RootLayout({
   children,
 }: {
@@ -5,8 +10,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        {children}
+      <body className={inter.className}>
+        <main className="container mx-auto px-4 py-8">
+          {children}
+        </main>
       </body>
     </html>
   );
