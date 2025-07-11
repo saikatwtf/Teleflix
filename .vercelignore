@@ -1,8 +1,4 @@
-# Ignore directories
-/backend
-/-p
-/frontend
-
-# Ignore files
-README.md
-LICENSE
+backend
+-p
+frontend
+app
