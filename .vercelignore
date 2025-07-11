@@ -1,3 +1,5 @@
-frontend
-backend
--p
+frontend/
+backend/
+-p/
+README.md
+LICENSE
