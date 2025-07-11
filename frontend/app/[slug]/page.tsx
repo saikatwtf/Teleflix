@@ -198,7 +198,7 @@ export default async function MediaPage({ params }: { params: { slug: string } }
             
             {Object.keys(media.seasons || {}).length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {Object.entries(media.seasons).map(([seasonNum, season]: [string, Season]) => (
+                {Object.entries(media.seasons || {}).map(([seasonNum, season]: [string, Season]) => (
                   <Link
                     key={seasonNum}
                     href={`/${slug}/season-${seasonNum}`}
