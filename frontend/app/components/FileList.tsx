@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from 'react';
 import { FiDownload, FiPlay, FiExternalLink } from 'react-icons/fi';
 
