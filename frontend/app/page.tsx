@@ -2,6 +2,23 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import MediaCard from './components/MediaCard';
 
+// Define interface for media items
+interface MediaItem {
+  id: string;
+  title: string;
+  slug: string;
+  media_type: string;
+  poster?: string;
+  rating?: number;
+  release_year?: number;
+}
+
+// Define interface for API response
+interface MediaResponse {
+  results: MediaItem[];
+  total: number;
+}
+
 // Metadata
 export const metadata: Metadata = {
   title: 'Teleflix - Home',
@@ -9,7 +26,7 @@ export const metadata: Metadata = {
 };
 
 // Fetch recent media
-async function getRecentMedia() {
+async function getRecentMedia(): Promise<MediaResponse> {
   const res = await fetch(`${process.env.API_URL}/api/recent?limit=12`, { next: { revalidate: 3600 } });
   
   if (!res.ok) {
@@ -20,7 +37,7 @@ async function getRecentMedia() {
 }
 
 export default async function Home() {
-  let recentMedia = { results: [], total: 0 };
+  let recentMedia: MediaResponse = { results: [], total: 0 };
   
   try {
     recentMedia = await getRecentMedia();
