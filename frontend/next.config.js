@@ -4,11 +4,16 @@ const nextConfig = {
   images: {
     domains: ['m.media-amazon.com', 'ia.media-imdb.com'],
   },
+  env: {
+    API_URL: process.env.API_URL || 'https://api.yourdomain.com'
+  },
   async rewrites() {
+    // Use a hardcoded fallback during build time
+    const apiUrl = process.env.API_URL || 'https://api.yourdomain.com';
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.API_URL || 'https://api.yourdomain.com'}/api/:path*`,
+        destination: apiUrl + '/api/:path*',
       },
     ]
   },

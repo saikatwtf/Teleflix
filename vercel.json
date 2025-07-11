@@ -4,7 +4,11 @@
   "devCommand": "cd frontend && npm run dev",
   "installCommand": "cd frontend && npm install",
   "env": {
-    "API_URL": "@api_url",
-    "NEXT_PUBLIC_API_URL": "@api_url"
+    "API_URL": "https://api.yourdomain.com"
+  },
+  "build": {
+    "env": {
+      "API_URL": "https://api.yourdomain.com"
+    }
   }
 }
