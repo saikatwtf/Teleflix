@@ -1,0 +1,1 @@
+This is a placeholder for the poster image. In a real implementation, you would need to add actual image files here.
