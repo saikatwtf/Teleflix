@@ -1,4 +1,10 @@
 import Link from 'next/link';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Teleflix - Home',
+  description: 'Stream and download your favorite movies, TV series, and anime.',
+};
 
 export default function Home() {
   return (
