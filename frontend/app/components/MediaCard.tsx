@@ -17,7 +17,7 @@ export default function MediaCard({ id, title, slug, mediaType, poster, rating, 
   const href = `/${slug}`;
   
   // Default poster if none provided
-  const posterUrl = poster || '/placeholder-poster.jpg';
+  const posterUrl = poster || 'https://placehold.co/300x450?text=No+Image';
   
   return (
     <div className="card">
